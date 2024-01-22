@@ -1,19 +1,31 @@
-﻿using System;
+﻿namespace snakeGame;
 
-namespace snakeGame;
-
-internal class Program
+internal static class Program
 {
     public static void Main()
     {
-        Snake snake = new Snake();
-        ConsoleKeyInfo readLine = new ConsoleKeyInfo();
-        while (readLine.Key != ConsoleKey.E)
+        var snake = new Snake();
+        ConsoleKeyInfo readLine = default;
+        var lastKeyPressTime = DateTime.Now;
+        var repeatInterval = TimeSpan.FromSeconds(1);
+
+        do
         {
+            if (Console.KeyAvailable)
+            {
+                readLine = Console.ReadKey();
+                lastKeyPressTime = DateTime.Now;
+            }
+            else if (DateTime.Now - lastKeyPressTime > repeatInterval)
+            {
+            }
+
             snake.MoveSnake(readLine.Key);
             snake.Print();
-            readLine = Console.ReadKey();
+
+            Thread.Sleep(1000); // Add a 1-second delay
+
             Console.Clear();
-        }
+        } while (readLine.Key != ConsoleKey.E);
     }
 }
